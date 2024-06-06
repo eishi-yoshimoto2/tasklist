@@ -16,13 +16,11 @@ use App\Http\Controllers\TasksController; //追記
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [TasksController::class, 'index']);
+
+Route::get('/dashboard', [TasksController::class, 'index'])->middleware(['auth'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     // Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
