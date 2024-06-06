@@ -120,16 +120,15 @@ class TasksController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
         // idの値でメッセージを検索して取得
-        $task = task::findOrFail($id);
+        $task = Task::findOrFail($id);
         
         if (\Auth::id() === $task->user_id) {
            // メッセージを削除
             $task->delete();
-            return back()
-             ->with('success', 'Delete Successful');
+            return redirect('/');
         }
 
         // トップページへリダイレクトさせる
