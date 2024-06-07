@@ -123,10 +123,15 @@ class TasksController extends Controller
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
         // メッセージを更新
-        $task->status = $request->status;    // 追加
-        $task->content = $request->content;
-        $task->save();
 
+
+        if (\Auth::id() === $task->user_id) {
+            $task->status = $request->status;    // 追加
+            $task->content = $request->content;
+            $task->save();
+            return redirect('/');
+        }
+        
         // トップページへリダイレクトさせる
         return redirect('/');
     }
