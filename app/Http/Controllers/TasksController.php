@@ -33,14 +33,18 @@ class TasksController extends Controller
      */
     public function create()
     {
- 
-            $task = new Task;
+         $task = new Task;
     
-            // メッセージ作成ビューを表示
+        // メッセージ作成ビューでそれを表示
+        // if (\Auth::id() === $task->user_id) {
+            
             return view('tasks.create', [
                 'task' => $task,
             ]);
+        // }
 
+        // トップページへリダイレクトさせる
+        return redirect('/');    
 
     }
 
@@ -75,11 +79,15 @@ class TasksController extends Controller
     {
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
+        
+        if (\Auth::id() === $task->user_id) {
+            return view('tasks.show', [
+                'task' => $task,
+            ]);
+        }
 
-        // メッセージ詳細ビューでそれを表示
-        return view('tasks.show', [
-            'task' => $task,
-        ]);
+        // トップページへリダイレクトさせる
+        return redirect('/');
     }
 
     /**
@@ -91,9 +99,15 @@ class TasksController extends Controller
         $task = task::findOrFail($id);
 
         // メッセージ編集ビューでそれを表示
-        return view('tasks.edit', [
-            'task' => $task,
-        ]);
+        if (\Auth::id() === $task->user_id) {
+            return view('tasks.edit', [
+                'task' => $task,
+            ]);
+        }
+
+        // トップページへリダイレクトさせる
+        return redirect('/');
+
     }
 
     /**
